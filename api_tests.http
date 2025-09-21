@@ -1,0 +1,103 @@
+### Phishing Detection API Tests
+### Make sure the API server is running first!
+
+### 1. Health Check
+GET http://localhost:5000/health
+Content-Type: application/json
+
+###
+
+### 2. API Information
+GET http://localhost:5000/
+Content-Type: application/json
+
+###
+
+### 3. Quick Check - Safe URL
+POST http://localhost:5000/quick-check
+Content-Type: application/json
+
+{
+    "url": "https://www.google.com"
+}
+
+###
+
+### 4. Quick Check - Suspicious URL (IP Address)
+POST http://localhost:5000/quick-check
+Content-Type: application/json
+
+{
+    "url": "http://192.168.1.100/login"
+}
+
+###
+
+### 5. Quick Check - Suspicious URL (Typosquatting)
+POST http://localhost:5000/quick-check
+Content-Type: application/json
+
+{
+    "url": "https://payp4l-secure.tk/verify-account"
+}
+
+###
+
+### 6. Full Analysis with Text Content
+POST http://localhost:5000/analyze
+Content-Type: application/json
+
+{
+    "url": "https://example.com",
+    "text": "URGENT! Your PayPal account has been SUSPENDED! Click here immediately to verify your account or it will be permanently closed!",
+    "include_content": false
+}
+
+###
+
+### 7. Full Analysis with Content Scraping
+POST http://localhost:5000/analyze
+Content-Type: application/json
+
+{
+    "url": "https://httpbin.org/html",
+    "include_content": true
+}
+
+###
+
+### 8. Batch Analysis
+POST http://localhost:5000/batch-analyze
+Content-Type: application/json
+
+{
+    "urls": [
+        "https://www.google.com",
+        "https://github.com",
+        "http://192.168.1.1/login",
+        "https://suspicious-site.tk"
+    ],
+    "include_content": false
+}
+
+###
+
+### 9. Test with Phishing Keywords
+POST http://localhost:5000/analyze
+Content-Type: application/json
+
+{
+    "url": "https://example.com",
+    "text": "Security Alert: Your Microsoft account shows unusual sign-in activity. Confirm your identity immediately to avoid account suspension. Click here to verify now.",
+    "include_content": false
+}
+
+###
+
+### 10. Test URL Shortener Detection
+POST http://localhost:5000/quick-check
+Content-Type: application/json
+
+{
+    "url": "https://bit.ly/suspicious123"
+}
